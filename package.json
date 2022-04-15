@@ -6,6 +6,9 @@
   "browser": "dist/embedsdk.js",
   "author": "dasubh",
   "license": "MIT",
+  "files": [
+    "dist/embedsdk.cjs.js"
+  ],
   "scripts": {
     "build": "rimraf ./dist && rollup -c",
     "lint": "eslint --fix 'src/**/*.ts'"
