@@ -1,17 +1,17 @@
 // @ts-nocheck
-import { getRootID } from "./helpers";
-import Contstants from "./constants";
+import { getRootID } from './helpers'
+import Contstants from './constants'
 
 export default function (config) {
-    const isDarkTheme = config.theme === "dark";
-    const rootID = getRootID(config);
+	const isDarkTheme = config.theme === 'dark'
+	const rootID = getRootID(config)
 
-    return `
+	return `
         #${config.targetID}: {
             background-color: orange !important;
         }
 
-        #${rootID}.modal {
+        #${rootID}.epns-sdk-embed-modal {
             display: none; /* Hidden by default */
             position: absolute;
             z-index: ${Contstants.CSS.ZINDEX_MAX};
@@ -23,11 +23,11 @@ export default function (config) {
             opacity: 0.8;
         }
 
-        #${rootID}.modal.modal-open {
+        #${rootID}.epns-sdk-embed-modal.epns-sdk-embed-modal-open {
             display: block;
         }
 
-        #${rootID} .modal-content {
+        #${rootID} .epns-sdk-embed-modal-content {
             background-color: #fefefe;
             padding: 5px 15px;
             border: 1px solid #888;
@@ -43,44 +43,44 @@ export default function (config) {
             justify-content:space-between;
         }
 
-        #${rootID} .modal-header {
+        #${rootID} .epns-sdk-embed-modal-header {
             display: flex;
             align-items: center;
             justify-content: space-between;
             flex-basis: 40px;
         }
 
-        #${rootID} .modal-header .header-text {
+        #${rootID} .epns-sdk-embed-modal-header .epns-sdk-embed-modal-header-text {
            font-weight: bold;
         }
 
-        #${rootID} .modal-header .modal-close-btn {
+        #${rootID} .epns-sdk-embed-modal-header .epns-sdk-embed-modal-close-btn {
             color: #aaaaaa;
             float: right;
             font-size: 28px;
             font-weight: bold;
         }
 
-        #${rootID} .modal-header .modal-close-btn:hover,
-        #${rootID} .modal-header .modal-close-btn:focus {
+        #${rootID} .epns-sdk-embed-modal-header .epns-sdk-embed-modal-close-btn:hover,
+        #${rootID} .epns-sdk-embed-modal-header .epns-sdk-embed-modal-close-btn:focus {
             color: #000;
             text-decoration: none;
             cursor: pointer;
         }
 
-        #${rootID} .modal-body {
+        #${rootID} .epns-sdk-embed-modal-body {
             padding: 5px 0 10px 0;
             flex-grow: 1;
         }
 
-        #${rootID} .modal-body iframe#${Contstants.IFRAME_ID} {
+        #${rootID} .epns-sdk-embed-modal-body iframe#${Contstants.IFRAME_ID} {
           display: block;
           width: 100%;
           height: 100%;
         }
 
-        #${rootID} .modal-footer {
+        #${rootID} .epns-sdk-embed-modal-footer {
             flex-basis: 20px;
         }
-    `;
-};
+    `
+}

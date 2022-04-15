@@ -1,3 +1,3 @@
-import EmbedSDK from './embedSdk';
+import EmbedSDK from './embedSdk'
 
-export default EmbedSDK;
+export default EmbedSDK
