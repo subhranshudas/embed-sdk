@@ -5,5 +5,6 @@ export default {
     IFRAME_ID: "EPNS_SDK_EMBED_IFRAME",
     CSS: {
        ZINDEX_MAX: 2147483638 // MAX value
-    }
+    },
+    IFRAME_TO_PARENT_MSG: "IFRAME_TO_PARENT_MSG"
 };

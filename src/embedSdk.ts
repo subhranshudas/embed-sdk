@@ -76,6 +76,21 @@ const EmbedSDK = {
         modalCloseBtn.onclick = function() {
             sdkRef.hideEmbedView();
         };
+
+        /**
+         * if the close button or any other message is passed.
+        */
+        window.onmessage = function(evt) {
+            try {
+                const publishedMessage = JSON.parse(evt.data);
+
+                if (publishedMessage && publishedMessage.msgCode === Constants.IFRAME_TO_PARENT_MSG) {
+                    console.log('Received communication from the IFRAME: ', publishedMessage);
+                }
+            } catch (err) {
+                console.error('something went wrong parsing IFRAME message to the APP.');
+            }
+        };
     },
     insertCSS() {
         const rootId = getRootID(this.config);
