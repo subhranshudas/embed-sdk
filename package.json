@@ -1,6 +1,6 @@
 {
   "name": "@subhranshu.das/embedsdk",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "main": "dist/embedsdk.cjs.js",
   "module": "dist/embedsdk.es.js",
   "browser": "dist/embedsdk.js",
