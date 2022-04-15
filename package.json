@@ -1,5 +1,5 @@
 {
-  "name": "@dasubh/embedsdk",
+  "name": "@subhranshu.das/embedsdk",
   "version": "1.0.0",
   "main": "dist/embedsdk.cjs.js",
   "module": "dist/embedsdk.es.js",
