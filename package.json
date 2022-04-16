@@ -1,0 +1,8 @@
+{
+  "name": "@dasubh/embedsdk",
+  "version": "1.0.0",
+  "main": "index.js",
+  "repository": "https://github.com/subhranshudas/embed-sdk.git",
+  "author": "srd",
+  "license": "MIT"
+}
