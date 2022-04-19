@@ -30,10 +30,10 @@ const EmbedSDK = {
 		if (!this.config.isInitialized) {
 			this.config = options;
 			this.config.isInitialized = true;
-			this.setUpWidget()
-			this.insertCSS()
+			this.setUpWidget();
+			this.insertCSS();
 			this.handleUnreadNotifications();
-			console.info('EmbedSDK: CONFIG set: ', this.config)
+			console.info('[EPNS-SDK] CONFIG set', this.config);
 		}
 	},
 	setUpWidget() {
@@ -58,11 +58,19 @@ const EmbedSDK = {
 							/**
 							* Add different cases for sub here
 							*/
-							console.log('Received communication from the IFRAME: ', publishedMessage)
+							console.info('Received communication from the IFRAME: ', publishedMessage);
+
+							if (publishedMessage.msgType === 'IFRAME_APP_LOADED') {
+								sdkRef.publishMessageToIFRAME({
+									msg: sdkRef.config,
+									msgCode: 'EPNS_SDK_PARENT_TO_IFRAME_MSG',
+									msgType: 'SDK_CONFIG_INIT'
+								});
+							}
 						}
 					}
 				} catch (err) {
-					console.error('something went wrong parsing IFRAME message to the APP.')
+					console.error('something went wrong parsing IFRAME message to the APP.', err)
 				}
 			},
 			false
@@ -102,16 +110,6 @@ const EmbedSDK = {
 
 		document.querySelector('body').appendChild(embedViewElement);
 
-
-		// pass the sdkConfig to the IFRAME
-		const iframeElement = embedViewElement.querySelector(`iframe#${Constants.EPNS_SDK_IFRAME_ID}`);
-		iframeElement.contentWindow.postMessage({
-			msgCode: 'EPNS_SDK_PARENT_TO_IFRAME_MSG',
-			msgType: 'SDK_CONFIG_INIT',
-			msg: sdkRef.config,	
-		},
-		'*');
-
 		sdkRef.removeUnreadIndicatorElement();
 
 		// When the user clicks anywhere outside of the modal, close it
@@ -122,6 +120,18 @@ const EmbedSDK = {
 			event.preventDefault();
 			event.stopPropagation();
 			sdkRef.hideEmbedView();
+		}
+	},
+	publishMessageToIFRAME({ msg, msgType, msgCode }) {
+		// pass the sdkConfig to the IFRAME
+		const iframeElement = document.querySelector(`iframe#${Constants.EPNS_SDK_IFRAME_ID}`);
+		try {
+			iframeElement.contentWindow.postMessage(
+				JSON.stringify({ msgCode, msgType, msg })
+				,'*'
+			);
+		} catch (err) {
+			console.error('[EPNS-SDK] - issue publishing message to IFRAME')
 		}
 	},
 	insertCSS() {
