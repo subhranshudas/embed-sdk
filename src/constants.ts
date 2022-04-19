@@ -1,5 +1,5 @@
 export default {
-	EPNS_SDK_EMBED_APP_URL: 'https://staging-app.epns.io/#/inbox',
+	EPNS_SDK_EMBED_APP_URL: 'https://subhranshudas.github.io/embed-dapp-poc',
 	EPNS_SDK_EMBED_API_URL: 'http://localhost:8080/api',
 	EPNS_SDK_EMBED_VIEW_ROOT: 'EPNS_SDK_EMBED_VIEW_ROOT',
 	EPNS_SDK_STYLE_TAG_ID_PREFIX: 'EPNS_SDK_STYLE_TAG_ID_',
