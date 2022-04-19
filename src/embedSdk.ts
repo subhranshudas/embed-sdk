@@ -188,9 +188,7 @@ const EmbedSDK = {
 		setLocalStorage(LS_KEY, latestNotifications);
 
 		if (count > 0) {
-			sdkRef.addUnreadIndicatorElement(
-				count > 9 ? `${count}+` : count
-			);
+			sdkRef.addUnreadIndicatorElement(count > 9 ? '9+' : count);
 		} else {
 			sdkRef.removeUnreadIndicatorElement();
 		}
