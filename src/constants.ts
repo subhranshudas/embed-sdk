@@ -1,6 +1,6 @@
 export default {
 	EPNS_SDK_EMBED_APP_URL: 'https://subhranshudas.github.io/embed-dapp-poc',
-	EPNS_SDK_EMBED_API_URL: 'http://localhost:8080/api',
+	EPNS_SDK_EMBED_API_URL: 'https://backend-kovan.epns.io/apis/feeds/get_feeds',
 	EPNS_SDK_EMBED_VIEW_ROOT: 'EPNS_SDK_EMBED_VIEW_ROOT',
 	EPNS_SDK_STYLE_TAG_ID_PREFIX: 'EPNS_SDK_STYLE_TAG_ID_',
 	EPNS_SDK_IFRAME_ID: 'EPNS_SDK_EMBED_IFRAME',

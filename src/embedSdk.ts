@@ -2,7 +2,7 @@
 import htmlTemplate from './htmlTemplate'
 import cssTemplate from './cssTemplate'
 import Constants from './constants'
-import { getRootID, isNumber } from './helpers'
+import { getRootID, getLocalStorage, setLocalStorage, getFirstItemInArray } from './helpers'
 
 
 const EmbedSDK = {
@@ -22,6 +22,7 @@ const EmbedSDK = {
 			unreadIndicatorPosition: 'top-right',
 			theme: 'light'
 		},
+		user: '0xD8634C39BBFd4033c0d3289C4515275102423681' // "0xD8634C39BBFd4033c0d3289C4515275102423681";
 	},
 	/**
      * Call this function when your APP intializes
@@ -163,56 +164,62 @@ const EmbedSDK = {
 	},
 	async refreshUnreadCount() {
 		const sdkRef = this;
-		const rootID = getRootID(this.config);
-
-		let lastOpenedPayloadId = window.localStorage.getItem(
-			`${Constants.EPNS_SDK_LOCAL_STORAGE_PREFIX}${rootID}_LAST_OPENED_PAYLOAD_ID`
-		)
-
-		
-		let unreadNotifications = await this.getUnreadNotifications();
-		let latestNotification = unreadNotifications.pop();
-		console.log("latestNotification: ", latestNotification);
-		let latestOpenedPayloadId = latestNotification && latestNotification.payload_id;
-
-		console.log("lastOpenedPayloadId: ", lastOpenedPayloadId);
-		console.log("latestOpenedPayloadId: ", latestOpenedPayloadId);
 		let count = 0;
+		const rootID = getRootID(this.config);
+		const LS_KEY = `${Constants.EPNS_SDK_LOCAL_STORAGE_PREFIX}${rootID}_LAST_NOTIFICATIONS`;
 
-		if ( /** WHEN THERE IS A LAST OPENED */
-			isNumber(lastOpenedPayloadId) && isNumber(latestOpenedPayloadId)
-			&& latestOpenedPayloadId > lastOpenedPayloadId
-		) {
-			count = latestOpenedPayloadId - lastOpenedPayloadId;
-			sdkRef.addUnreadIndicatorElement(count);
-			console.warn("subsequent load: ");
-			window.localStorage.setItem(
-				`${Constants.EPNS_SDK_LOCAL_STORAGE_PREFIX}${rootID}_LAST_OPENED_PAYLOAD_ID`,
-				latestOpenedPayloadId
-			)
-		} else if ( /** FIRST LOAD */
-			!isNumber(lastOpenedPayloadId) && isNumber(latestOpenedPayloadId)
-		) {
-				console.warn("first load: ");
-				count = latestOpenedPayloadId;
-				sdkRef.addUnreadIndicatorElement(count);
-				window.localStorage.setItem(
-					`${Constants.EPNS_SDK_LOCAL_STORAGE_PREFIX}${rootID}_LAST_OPENED_PAYLOAD_ID`,
-					latestOpenedPayloadId
-				);
+		let lastNotifications = await getLocalStorage(LS_KEY);		
+		let latestNotifications = await sdkRef.getUnreadNotifications();
+
+		latestNotifications = latestNotifications.map((notif) => notif.payload_id);
+
+		const lastNotification = getFirstItemInArray(lastNotifications);
+
+		if (lastNotification) {
+			const indexOfID = latestNotifications.indexOf(lastNotification);
+			if (indexOfID !== -1) { // present
+				let latestNotificationsUnread = latestNotifications.slice(0, indexOfID);
+				count = latestNotificationsUnread.length;
+			}
+		} else {
+			count = latestNotifications.length;
+		}
+
+		setLocalStorage(LS_KEY, latestNotifications);
+
+		if (count > 0) {
+			sdkRef.addUnreadIndicatorElement(
+				count > 9 ? `${count}+` : count
+			);
 		} else {
 			sdkRef.removeUnreadIndicatorElement();
 		}
 	},
 	async getUnreadNotifications() {
+		const sdkRef = this;
+		const user = sdkRef.config.user;
+
 		// call the API here
 		try {
-			const response = await fetch(Constants.EPNS_SDK_EMBED_API_URL);
+			const response = await fetch(Constants.EPNS_SDK_EMBED_API_URL, {
+				// Adding method type
+				method: "POST",
+				// Adding body or contents to send
+				body: JSON.stringify({
+					"user": user,
+					"page": 1,
+					"pageSize": 10,
+					"op": "read"
+				}),
+				// Adding headers to the request
+				headers: {
+					"Content-type": "application/json; charset=UTF-8"
+				}
+			});
 
 			if (response.ok) {
 				const json = await response.json();
-				console.log("JSON? : ", json);
-				return json.notifications || [];
+				return json.results || [];
 			  } else {
 				return [];
 			  }
