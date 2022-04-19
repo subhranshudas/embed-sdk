@@ -68,6 +68,10 @@ const EmbedSDK = {
 									msgType: 'SDK_CONFIG_INIT'
 								});
 							}
+
+							if (publishedMessage.msgType === 'IFRAME_APP_CLOSE') {
+								sdkRef.hideEmbedView();
+							}
 						}
 					}
 				} catch (err) {
