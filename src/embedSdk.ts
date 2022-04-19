@@ -104,7 +104,7 @@ const EmbedSDK = {
 
 
 		// pass the sdkConfig to the IFRAME
-		const iframeElement = embedViewElement.querySelector(`iframe#${Contstants.EPNS_SDK_IFRAME_ID}`);
+		const iframeElement = embedViewElement.querySelector(`iframe#${Constants.EPNS_SDK_IFRAME_ID}`);
 		iframeElement.contentWindow.postMessage({
 			msgCode: 'EPNS_SDK_PARENT_TO_IFRAME_MSG',
 			msgType: 'SDK_CONFIG_INIT',
