@@ -7,8 +7,12 @@ function toUpper(str = '') {
 
 export function getRootID(config) {
 	if (config.appName) {
-		return `${Constants.EMBED_VIEW_ROOT}_${toUpper(config.appName)}`
+		return `${Constants.EPNS_SDK_EMBED_VIEW_ROOT}_${toUpper(config.appName)}`
 	}
 
-	return `${Constants.EMBED_VIEW_ROOT}_DEFAULT_APPNAME`
+	return `${Constants.EPNS_SDK_EMBED_VIEW_ROOT}_DEFAULT_APPNAME`
+}
+
+export function isNumber(num) {
+	return Number.isInteger(parseInt(num))
 }

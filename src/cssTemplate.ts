@@ -3,84 +3,120 @@ import { getRootID } from './helpers'
 import Contstants from './constants'
 
 export default function (config) {
-	const isDarkTheme = config.theme === 'dark'
+	const isDarkTheme = config.viewOptions.theme === 'dark';
+  const viewType = config.viewOptions.type || 'sidebar';
 	const rootID = getRootID(config)
 
 	return `
-        #${config.targetID}: {
-            background-color: orange !important;
-        }
-
         #${rootID}.epns-sdk-embed-modal {
-            display: none; /* Hidden by default */
-            position: absolute;
-            z-index: ${Contstants.CSS.ZINDEX_MAX};
-            left: 0;
-            top: 0;
-            right: 0;
-            bottom: 0;
-            background-color: #000000;
-            opacity: 0.8;
+          display: none; /* Hidden by default */
+          transition: display 0.5s ease-in-out;
         }
 
         #${rootID}.epns-sdk-embed-modal.epns-sdk-embed-modal-open {
-            display: block;
+          display: block;
+          position: absolute;
+          left: 0;
+          top: 0;
+          right: 0;
+          bottom: 0;
+          z-index: ${Contstants.EPNS_SDK_CSS.ZINDEX_MAX - 2};
+        }
+
+        #${rootID} .epns-sdk-embed-modal-overlay {
+          position: absolute;
+          top: 0;
+          right: 0;
+          left: 0;
+          bottom: 0;
+          background-color: #000000bf;
+          z-index: ${Contstants.EPNS_SDK_CSS.ZINDEX_MAX - 2};
         }
 
         #${rootID} .epns-sdk-embed-modal-content {
-            background-color: #fefefe;
-            padding: 5px 15px;
-            border: 1px solid #888;
-            border-radius: 4px;
-            width: 100%;
-            max-width: 450px;
-            position: absolute;
-            top: 0;
-            right: 0;
-            bottom: 0;
-            display: flex;
-            flex-direction: column;
-            justify-content:space-between;
-        }
-
-        #${rootID} .epns-sdk-embed-modal-header {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            flex-basis: 40px;
-        }
-
-        #${rootID} .epns-sdk-embed-modal-header .epns-sdk-embed-modal-header-text {
-           font-weight: bold;
-        }
-
-        #${rootID} .epns-sdk-embed-modal-header .epns-sdk-embed-modal-close-btn {
-            color: #aaaaaa;
-            float: right;
-            font-size: 28px;
-            font-weight: bold;
-        }
-
-        #${rootID} .epns-sdk-embed-modal-header .epns-sdk-embed-modal-close-btn:hover,
-        #${rootID} .epns-sdk-embed-modal-header .epns-sdk-embed-modal-close-btn:focus {
-            color: #000;
-            text-decoration: none;
-            cursor: pointer;
-        }
-
-        #${rootID} .epns-sdk-embed-modal-body {
-            padding: 5px 0 10px 0;
-            flex-grow: 1;
-        }
-
-        #${rootID} .epns-sdk-embed-modal-body iframe#${Contstants.IFRAME_ID} {
-          display: block;
+          position: relative;
           width: 100%;
           height: 100%;
+          z-index: ${Contstants.EPNS_SDK_CSS.ZINDEX_MAX};
         }
 
-        #${rootID} .epns-sdk-embed-modal-footer {
-            flex-basis: 20px;
+        #${rootID} .epns-sdk-embed-modal-content iframe#${Contstants.EPNS_SDK_IFRAME_ID} {
+          ${viewType === 'sidebar' ? 'width: 450px;' : 'width: 100%;'}
+          height: 100%;
+          border-radius: 8px;
+          overflow: hidden;
+          border: none;
+          position: absolute;
+          right: 0;
+          top: 0;
+          bottom: 0;
+        }  
+
+        #${config.targetID} {
+            position: relative;
         }
+
+
+        /* UNREAD INDICATOR STYLES  */
+        #${config.targetID} .epns-sdk-unread-indicator.epns-sdk-appname-${config.appName} {
+            position: absolute;
+            display: block;
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            background: ${config.viewOptions.unreadIndicatorColor};
+            box-shadow: 0 0 0 ${config.viewOptions.unreadIndicatorColor};
+            animation: epnsSdkPulse-${config.appName} 2s infinite;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 10px;
+            color: #fff;
+          }
+  
+          #${config.targetID} .epns-sdk-unread-indicator.epns-sdk-appname-${config.appName}.top-right {
+            right: -10px;
+            top: -10px;
+          }
+  
+          #${config.targetID} .epns-sdk-unread-indicator.epns-sdk-appname-${config.appName}.top-left {
+            left: -10px;
+            top: -10px;
+          }
+  
+          #${config.targetID} .epns-sdk-unread-indicator.epns-sdk-appname-${config.appName}.bottom-left {
+            bottom: -10px;
+            left: -10px;
+          }
+          #${config.targetID} .epns-sdk-unread-indicator.epns-sdk-appname-${config.appName}.bottom-right {
+            bottom: -10px;
+            right: -10px;
+          }
+  
+          @-webkit-keyframes epnsSdkPulse-${config.appName} {
+            0% {
+              -webkit-box-shadow: 0 0 0 0 ${config.viewOptions.unreadIndicatorColor};
+            }
+            70% {
+                -webkit-box-shadow: 0 0 0 10px #0000;
+            }
+            100% {
+                -webkit-box-shadow: 0 0 0 0 #0000;
+            }
+          }
+          @keyframes epnsSdkPulse-${config.appName} {
+            0% {
+              -moz-box-shadow: 0 0 0 0 ${config.viewOptions.unreadIndicatorColor};
+              box-shadow: 0 0 0 0 ${config.viewOptions.unreadIndicatorColor};
+            }
+            70% {
+                -moz-box-shadow: 0 0 0 10px #0000;
+                box-shadow: 0 0 0 10px #0000;
+            }
+            100% {
+                -moz-box-shadow: 0 0 0 0 #0000;
+                box-shadow: 0 0 0 0 #0000;
+            }
+          }
     `
 }

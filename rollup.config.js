@@ -17,7 +17,7 @@ export default [
 			resolve(),   // so Rollup can find `ms`
 			commonjs(),  // so Rollup can convert `ms` to an ES module
 			typescript(), // so Rollup can convert TypeScript to JavaScript
-            terser()
+            terser({ output: { comments: false } })
 		]
 	},
 
@@ -32,7 +32,7 @@ export default [
 		external: ['ms'],
 		plugins: [
 			typescript(), // so Rollup can convert TypeScript to JavaScript
-            terser()
+            terser({ output: { comments: false } })
 		],
 		output: [
 			{ file: pkg.main, format: 'cjs' },
