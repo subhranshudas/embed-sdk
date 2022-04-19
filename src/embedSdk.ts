@@ -173,6 +173,8 @@ const EmbedSDK = {
 
 		latestNotifications = latestNotifications.map((notif) => notif.payload_id);
 
+		console.log({ lastNotifications, latestNotifications })
+
 		const lastNotification = getFirstItemInArray(lastNotifications);
 
 		if (lastNotification) {
