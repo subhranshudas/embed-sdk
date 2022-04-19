@@ -6,12 +6,16 @@ import { getRootID, isNumber } from './helpers'
 
 
 const EmbedSDK = {
+	/**
+	 * DEFAULT config options, to be overriden by the client dApp
+	 */
 	config: {
 		isInitialized: false,
 		isFrameVisible: false,
 		targetID: 'epns-sdk-trigger-id',
 		appName: 'appName',
 		viewOptions: {
+			headerText: 'Notifications',
 			type: 'sidebar',
 			showUnreadIndicator: false,
 			unreadIndicatorColor: '#cc1919',
@@ -25,7 +29,9 @@ const EmbedSDK = {
 	init(options: any) {
 		if (!this.config.isInitialized) {
 			this.config = options;
-			this.config.isInitialized = true
+			this.config.isInitialized = true;
+			window.localStorage.setItem('EPNS_SDK_CONFIG', JSON.stringify(this.config));
+
 			this.setUpWidget()
 			this.insertCSS()
 			this.handleUnreadNotifications();
