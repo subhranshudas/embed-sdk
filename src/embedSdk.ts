@@ -236,9 +236,9 @@ const EmbedSDK = {
 		  `epns-sdk-appname-${this.config.appName}`,
 		  this.config.viewOptions.unreadIndicatorPosition
 		)
-		if (count !== undefined) {
-		  throbber.innerText = count > 9 ? 9 : count
-		}
+
+		throbber.innerText = count;
+
 		if (document.querySelector(`#${this.config.targetID}`)) {
 		  document.querySelector(`#${this.config.targetID}`).appendChild(throbber)
 		}
