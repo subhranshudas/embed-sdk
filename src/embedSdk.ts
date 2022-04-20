@@ -39,14 +39,16 @@ const EmbedSDK = {
 	},
 	setUpWidget() {
 		const sdkRef = this;
-		
 		/**
 		 * Add stuff needed after the page has loaded
 		 */
-		window.addEventListener('load', () => {
+		if (document.readyState === 'complete') {
             sdkRef.setUpEventHandlers();
-        });
-
+		} else {
+			window.addEventListener('load', () => {
+				sdkRef.setUpEventHandlers();
+			})
+		}
 		/**
 		 * MESSAGE pub/sub
 		 */
