@@ -86,6 +86,7 @@ const EmbedSDK = {
 		const triggerElement = document.querySelector(`#${sdkRef.config.targetID}`);
 
 		if (triggerElement && triggerElement.id === sdkRef.config.targetID) {
+			console.info(`[EPNS-SDK - click handler attached to the #${sdkRef.config.targetID} ]`);
 			triggerElement.addEventListener('click', (clickEvent) => {
 				clickEvent.preventDefault()
 				clickEvent.stopPropagation()
